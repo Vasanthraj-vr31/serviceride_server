@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+    role: { type: String, enum: ['User', 'Admin', 'Client'], default: 'User' }
 });
 
 // Vehicle Schema
@@ -40,7 +40,15 @@ const bookingSchema = new mongoose.Schema({
         city: { type: String, required: true },
         state: { type: String, required: true }
     },
-    status: { type: String, enum: ['Pending', 'Confirmed', 'Completed', 'Cancelled'], default: 'Pending' }
+    status: { type: String, enum: ['Pending', 'Accepted', 'In Service', 'Service Completed', 'Ready for Pickup', 'Delivered', 'Cancelled'], default: 'Pending' },
+    estimatedCost: { type: Number },
+    finalCost: { type: Number },
+    remarks: { type: String }, // General remarks, kept for backwards compatibility if needed, but not user-visible via new logic
+    serviceDate: { type: Date },
+    updateMessage: { type: String }, // Old generic message
+    adminMessage: { type: String }, // New specific message for user
+    clientMessage: { type: String }, // New specific message for admin
+    rating: { type: Number, min: 1, max: 5 }
 });
 
 const User = mongoose.model("User", userSchema);
